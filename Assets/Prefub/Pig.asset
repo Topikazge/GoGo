@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24b44dfad0809e49a277b4f7ad96860, type: 3}
+  m_Name: Pig
+  m_EditorClassIdentifier: 
+  _enemyType: 0
+  _speed: 3
+  _maxHealth: 4
+  _damage: 1
+  _separationData:
+    separationRadius: 0.5
+    separationForce: 0.5
+  _attackInterval: 1
+  _sprite: {fileID: 21300000, guid: 4335316af6a6cf3419566d1c9313d2b2, type: 3}
+  _animatorController: {fileID: 9100000, guid: 146367ea2d0ad12438b371c0eb94fc51, type: 2}
+  _prefub: {fileID: 7252581630977044465, guid: d9f020a5819017e4fb45154dafe14c7c, type: 3}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24b44dfad0809e49a277b4f7ad96860, type: 3}
+  m_Name: Enemy Melee
+  m_EditorClassIdentifier: 
+  _enemyType: 0
+  _speed: 1
+  _maxHealth: 2
+  _damage: 1
+  _separationData:
+    separationRadius: 0.5
+    separationForce: 0.5
+  _attackInterval: 1
+  _sprite: {fileID: 21300000, guid: 3c0027c84b538f746957031dd45b4da3, type: 3}
+  _animatorController: {fileID: 9100000, guid: 92ac96d13992d1e45bb5519bc16468cf, type: 2}
+  _prefub: {fileID: 3715980035403301830, guid: c8ea2e9804524a04b8f0547b16eec9df, type: 3}
