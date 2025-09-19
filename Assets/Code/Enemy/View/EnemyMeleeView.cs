@@ -9,6 +9,8 @@ public class EnemyMeleeView : EnemyView
     public EnemyMeleeData Data { get => _data;}
     public SpriteRenderer SpriteRenderer  => _spriteRenderer;
 
+    public override int Damage => throw new System.NotImplementedException();
+
     public void Init(EnemyMeleeData data,SpriteRenderer spriteRenderer)
     {
         _data = data;

@@ -13,6 +13,14 @@ public class InputContainer : MonoBehaviour
     private void Awake()
     {
         _inputActions = new InputPlayer();
+   
+    }
+    private void OnEnable()
+    {
         _inputActions.Enable();
+    }
+    private void OnDisable()
+    {
+        _inputActions.Disable();
     }
 }

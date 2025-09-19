@@ -26,7 +26,7 @@ public class TestDamage : MonoBehaviour
             IDamageable damageable = hit.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                tESTControllers.ApplyDamage(damageable, 1, gameObject);
+                tESTControllers.ApplyHit(damageable, 1, gameObject);
                 _nextAttackTime = Time.time + _attackCooldown; // назначаем время следующей атаки
             }
         }

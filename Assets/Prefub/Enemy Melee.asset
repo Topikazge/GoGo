@@ -17,8 +17,8 @@ MonoBehaviour:
   _maxHealth: 2
   _damage: 1
   _separationData:
-    separationRadius: 0.5
-    separationForce: 0.5
+    separationRadius: 1
+    separationForce: 1
   _attackInterval: 1
   _sprite: {fileID: 21300000, guid: 3c0027c84b538f746957031dd45b4da3, type: 3}
   _animatorController: {fileID: 9100000, guid: 92ac96d13992d1e45bb5519bc16468cf, type: 2}
