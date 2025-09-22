@@ -303,6 +303,18 @@ PrefabInstance:
       propertyPath: _radius
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5678185788002461299, guid: 371efb66b1f44444a9b625d1cb065090, type: 3}
+      propertyPath: _playerData._speed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678185788002461299, guid: 371efb66b1f44444a9b625d1cb065090, type: 3}
+      propertyPath: _enemyLayerMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678185788002461299, guid: 371efb66b1f44444a9b625d1cb065090, type: 3}
+      propertyPath: _playerData._currentHealth
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6285987638435256173, guid: 371efb66b1f44444a9b625d1cb065090, type: 3}
       propertyPath: m_Name
       value: Player
@@ -382,11 +394,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 885837292}
-  enemyMeleeData: {fileID: 11400000, guid: b408c1c6fed23374bb69edffb2c9d4cf, type: 2}
-  enemyMeleeDataTWO: {fileID: 11400000, guid: 891eeb7e5338cb8418da7902233eba61, type: 2}
+  _enemyMeleeData: {fileID: 11400000, guid: 891eeb7e5338cb8418da7902233eba61, type: 2}
+  _enemyMeleeDataTwo: {fileID: 11400000, guid: b408c1c6fed23374bb69edffb2c9d4cf, type: 2}
   _amountEnemy: 100
   _moveCount: 50
-  _interval: 0
+  _spawnInterval: 1
 --- !u!4 &1690480346
 Transform:
   m_ObjectHideFlags: 0
@@ -489,10 +501,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 1
   _radius: 0.2
-  _layerMask:
+  _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _direction: {x: 0, y: 0}
+  _damage: 10
+  _lifetime: 5
 --- !u!4 &1899348931
 Transform:
   m_ObjectHideFlags: 0
@@ -502,7 +515,7 @@ Transform:
   m_GameObject: {fileID: 1899348928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.43, y: 2.23, z: 0}
+  m_LocalPosition: {x: -2.36, y: -0.13, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

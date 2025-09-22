@@ -1,19 +1,30 @@
 using UnityEngine;
 
+/// <summary>
+/// Базовый класс для данных врагов
+/// </summary>
 public abstract class EnemyDataBase
 {
+    [Header("Enemy Stats")]
     private int _health;
-    private GameObject _gameobject;
+    private GameObject _gameObject;
     private EnemyDataConfigBase _enemyDataConfigBase;
 
-    protected EnemyDataBase(int health, GameObject gameobject, EnemyDataConfigBase enemyDataConfigBase)
+    /// <summary>
+    /// Конструктор базового класса данных врага
+    /// </summary>
+    /// <param name="health">Здоровье врага</param>
+    /// <param name="gameObject">Игровой объект врага</param>
+    /// <param name="enemyDataConfigBase">Конфигурация данных врага</param>
+    protected EnemyDataBase(int health, GameObject gameObject, EnemyDataConfigBase enemyDataConfigBase)
     {
         Health = health;
-        Gameobject = gameobject;
+        GameObject = gameObject;
         EnemyDataConfigBase = enemyDataConfigBase;
     }
 
+    // Properties
     public int Health { get => _health; set => _health = value; }
-    public GameObject Gameobject { get => _gameobject; set => _gameobject = value; }
+    public GameObject GameObject { get => _gameObject; set => _gameObject = value; }
     public EnemyDataConfigBase EnemyDataConfigBase { get => _enemyDataConfigBase; set => _enemyDataConfigBase = value; }
 }

@@ -3,144 +3,164 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Контроллер тестирования врагов - управляет спавном и поведением врагов
+/// </summary>
 public class TESTControllers : MonoBehaviour, IHitEnemies
 {
+    [Header("Target Settings")]
     [SerializeField] private Transform _target;
-    [SerializeField] private EnemyMeleeDataConfig enemyMeleeData;
-    [SerializeField] private EnemyMeleeDataConfig enemyMeleeDataTWO;
+    
+    [Header("Enemy Configurations")]
+    [SerializeField] private EnemyMeleeDataConfig _enemyMeleeData;
+    [SerializeField] private EnemyMeleeDataConfig _enemyMeleeDataTwo;
+    
+    [Header("Spawn Settings")]
     [SerializeField] private int _amountEnemy;
     [SerializeField] private int _moveCount;
-    [SerializeField] private float _interval = 5f;
+    [SerializeField] private float _spawnInterval = 1f; // Интервал спавна врагов (1 секунда по умолчанию)
+
+    [Header("Enemy Management")]
     private List<EnemyMeleeData> _enemyMeleeView;
     private IEnemyFactory _enemyFactory;
-    private EnemyPool enemyPool;
+    private EnemyPool _enemyPool;
 
     private void Start()
     {
-        _enemyFactory = new EnemyFactory();
-        enemyPool = new EnemyPool();
-        _enemyMeleeView = new List<EnemyMeleeData>();
-
-        for (int i = 0; i < _amountEnemy; i++)
-        {
-            if ((i % 2) == 0)
-                _enemyMeleeView.Add(_enemyFactory.CreateEnemy(enemyMeleeData));
-            else
-                _enemyMeleeView.Add(_enemyFactory.CreateEnemy(enemyMeleeDataTWO));
-        }
-
-        _moveCount = Mathf.Min(_moveCount, _amountEnemy);
-        StartCoroutine(FiveSecondLoop());
+        InitializeEnemySystem();
+        StartCoroutine(EnemySpawnLoop());
     }
 
-    private void Update()
+    /// <summary>
+    /// Инициализация системы врагов
+    /// </summary>
+    private void InitializeEnemySystem()
+    {
+        _enemyFactory = new EnemyFactory();
+        _enemyPool = new EnemyPool();
+        _enemyMeleeView = new List<EnemyMeleeData>();
+        
+        if (_target == null)
+        {
+            Debug.LogError("Target not assigned in TESTControllers!");
+        }
+        
+        if (_enemyMeleeData == null || _enemyMeleeDataTwo == null)
+        {
+            Debug.LogError("Enemy data configurations not assigned!");
+        }
+    }
+
+    private void FixedUpdate()
     {
         MoveToTarget();
     }
 
+    /// <summary>
+    /// Применение урона к врагу
+    /// </summary>
+    /// <param name="target">Цель для нанесения урона</param>
+    /// <param name="amount">Количество урона</param>
+    /// <param name="source">Источник урона</param>
     public void ApplyHit(IDamageable target, int amount, GameObject source)
     {
-        EnemyMeleeView enemyView = (EnemyMeleeView)target;
-        EnemyMeleeData enemyMeleeData = enemyView.Data;
-        enemyMeleeData.Health -= amount;
-        if (enemyMeleeData.Health <= 0)
+        if (target is EnemyMeleeView enemyView && enemyView.Data != null)
         {
-            _enemyMeleeView.Remove(enemyView.Data);
-            enemyPool.ReturnInPool(enemyView);
-            enemyView.gameObject.SetActive(false);
-        }
-    }
-
-    public void ApplyDamageCharacter(IEnemyHit enemyHit)
-    {
-        // IEnemyHit
-    }
-
-    private void MoveToTarget()
-    {
-        int listCount = _enemyMeleeView.Count;
-        if (listCount == 0) return;
-
-        List<int> indices = new List<int>();
-        for (int i = 0; i < listCount; i++)
-        {
-            indices.Add(i);
-        }
-
-        List<int> movingIndices = new List<int>();
-        int enemiesToMove = Mathf.Min(_moveCount, listCount);
-        for (int i = 0; i < enemiesToMove; i++)
-        {
-            if (indices.Count == 0) break;
-            int randomIndex = UnityEngine.Random.Range(0, indices.Count);
-            int enemyIndex = indices[randomIndex];
-            indices.RemoveAt(randomIndex);
-            movingIndices.Add(enemyIndex);
-
-            EnemyMeleeData enemyMeleeData = _enemyMeleeView[enemyIndex];
-            if (enemyMeleeData == null) continue;
-
-            Vector3 direction = (_target.position - enemyMeleeData.EnemyMeleeView.transform.position).normalized;
-            enemyMeleeData.Gameobject.transform.position += direction * enemyMeleeData.EnemyDataConfigBase.Speed * Time.deltaTime;
-
-            if (direction.x < 0)
-                enemyMeleeData.EnemyMeleeView.Flip(FlipSprite.Right);
-            else
-                enemyMeleeData.EnemyMeleeView.Flip(FlipSprite.Left);
-        }
-
-        ApplySeparation(movingIndices);
-    }
-
-    private void ApplySeparation(List<int> movingIndices)
-    {
-        int movingCount = movingIndices.Count;
-        for (int k = 0; k < movingCount; k++)
-        {
-            int i = movingIndices[k];
-            if (_enemyMeleeView[i] == null) continue;
-            Transform enemyI = _enemyMeleeView[i].Gameobject.transform;
-            EnemyMeleeData dataI = _enemyMeleeView[i];
-
-            for (int j = 0; j < _enemyMeleeView.Count; j++)
+            EnemyMeleeData enemyMeleeData = enemyView.Data;
+            enemyMeleeData.Health -= amount;
+            
+            if (enemyMeleeData.Health <= 0)
             {
-                if (i == j) continue;
-                if (_enemyMeleeView[j] == null) continue;
-
-                Transform enemyJ = _enemyMeleeView[j].Gameobject.transform;
-
-                float dist = Vector3.Distance(enemyI.position, enemyJ.position);
-
-                if (dist < dataI.EnemyDataConfigBase.SeparationData.Radius && dist > 0.001f)
-                {
-                    Vector3 pushDir = (enemyI.position - enemyJ.position).normalized;
-                    float force = (dataI.EnemyDataConfigBase.SeparationData.Radius - dist) / dataI.EnemyDataConfigBase.SeparationData.Radius;
-                    enemyI.position += pushDir * (dataI.EnemyDataConfigBase.SeparationData.Force * force);
-
-                    Debug.Log($"Отталкивание: enemy {i} от enemy {j}, dist: {dist}, force: {force * dataI.EnemyDataConfigBase.SeparationData.Force}");
-                }
+                _enemyMeleeView.Remove(enemyView.Data);
+                _enemyPool.ReturnInPool(enemyView);
+                enemyView.gameObject.SetActive(false);
             }
         }
     }
 
-    private void OnFiveSecondsTick()
+    /// <summary>
+    /// Применение урона персонажу от врага
+    /// </summary>
+    /// <param name="enemyHit">Враг, наносящий урон</param>
+    public void ApplyDamageCharacter(IEnemyHit enemyHit)
     {
-        Debug.Log("Прошло 5 секунд!");
-        if (enemyPool.IsNotEmpty())
+        // TODO: Реализовать логику урона персонажу
+        // if (enemyHit != null && _target != null)
+        // {
+        //     // Применить урон к персонажу
+        // }
+    }
+
+    /// <summary>
+    /// Движение всех врагов к цели
+    /// </summary>
+    private void MoveToTarget()
+    { 
+        if (_target == null) return;
+        
+        foreach (EnemyMeleeData enemy in _enemyMeleeView)
         {
-            EnemyView objectFromPool = enemyPool.GetObjectOrNull();
-            EnemyMeleeView a = (EnemyMeleeView)objectFromPool;
-            _enemyMeleeView.Add(a.Data);
-            a.gameObject.SetActive(true);
+            if (enemy?.EnemyMeleeView != null)
+            {
+                enemy.EnemyMeleeView.MoveToTarget(_target.position);
+            }
         }
     }
 
-    private IEnumerator FiveSecondLoop()
+    /// <summary>
+    /// Спавн нового врага
+    /// </summary>
+    private void OnSpawnEnemy()
+    {
+        if (_enemyPool.IsNotEmpty())
+        {
+            EnemyView objectFromPool = _enemyPool.GetObjectOrNull();
+            if (objectFromPool is EnemyMeleeView enemy && enemy.Data != null)
+            {
+                _enemyMeleeView.Add(enemy.Data);
+                enemy.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            // Создаём нового врага, если в пуле пусто
+            EnemyMeleeData data = CreateNewEnemy();
+            if (data != null)
+            {
+                _enemyMeleeView.Add(data);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Создание нового врага
+    /// </summary>
+    /// <returns>Данные созданного врага</returns>
+    private EnemyMeleeData CreateNewEnemy()
+    {
+        // Чередуем типы врагов
+        bool useFirstConfig = (_enemyMeleeView.Count % 2) == 0;
+        EnemyMeleeDataConfig config = useFirstConfig ? _enemyMeleeData : _enemyMeleeDataTwo;
+        
+        if (config == null)
+        {
+            Debug.LogError("Enemy configuration is null!");
+            return null;
+        }
+        
+        return _enemyFactory.CreateEnemy(config);
+    }
+
+    /// <summary>
+    /// Цикл спавна врагов
+    /// </summary>
+    /// <returns>Корутина</returns>
+    private IEnumerator EnemySpawnLoop()
     {
         while (true)
         {
-            yield return new WaitForSeconds(_interval);
-            OnFiveSecondsTick();
+            yield return new WaitForSeconds(_spawnInterval);
+            OnSpawnEnemy();
         }
     }
 }

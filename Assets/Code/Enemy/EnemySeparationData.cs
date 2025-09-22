@@ -1,11 +1,16 @@
 using UnityEngine;
 
+/// <summary>
+/// Данные для разделения врагов (избежание столкновений)
+/// </summary>
 [System.Serializable]
 public class EnemySeparationData
 {
-    [SerializeField] private float separationRadius;
-    [SerializeField] private float separationForce;
+    [Header("Separation Settings")]
+    [SerializeField] private float _separationRadius = 1f;
+    [SerializeField] private float _separationForce = 5f;
 
-    public float Radius => separationRadius;
-    public float Force => separationForce;
+    // Properties
+    public float Radius => _separationRadius;
+    public float Force => _separationForce;
 }

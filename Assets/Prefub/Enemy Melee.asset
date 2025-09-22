@@ -16,10 +16,12 @@ MonoBehaviour:
   _speed: 1
   _maxHealth: 2
   _damage: 1
-  _separationData:
-    separationRadius: 1
-    separationForce: 1
   _attackInterval: 1
   _sprite: {fileID: 21300000, guid: 3c0027c84b538f746957031dd45b4da3, type: 3}
   _animatorController: {fileID: 9100000, guid: 92ac96d13992d1e45bb5519bc16468cf, type: 2}
-  _prefub: {fileID: 3715980035403301830, guid: c8ea2e9804524a04b8f0547b16eec9df, type: 3}
+  _prefab: {fileID: 3715980035403301830, guid: c8ea2e9804524a04b8f0547b16eec9df, type: 3}
+  _separationData:
+    _separationRadius: 1
+    _separationForce: 5
+  _attackRange: 1.5
+  _knockbackForce: 5

@@ -1,15 +1,26 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Конфигурация данных персонажа
+/// </summary>
 [CreateAssetMenu(fileName = "Character Config", menuName = "Configs/Character")]
 public class CharacterDataConfig : ScriptableObject
 {
-    [SerializeField] private float _speed;
-    [SerializeField] private int _healt;
-    [SerializeField] private float _radiosApplyDamage;
-    [SerializeField] private GameObject _prefub;
+    [Header("Movement Settings")]
+    [SerializeField] private float _speed = 5f;
+    
+    [Header("Health Settings")]
+    [SerializeField] private int _health = 100;
+    
+    [Header("Combat Settings")]
+    [SerializeField] private float _radiusApplyDamage = 1.5f;
+    
+    [Header("Prefab Settings")]
+    [SerializeField] private GameObject _prefab;
 
+    // Properties
     public float Speed => _speed;
-    public int Healt => _healt;
-    public float RadiosApplyDamage => _radiosApplyDamage;
-    public GameObject Prefub => _prefub;
+    public int Health => _health;
+    public float RadiusApplyDamage => _radiusApplyDamage;
+    public GameObject Prefab => _prefab;
 }

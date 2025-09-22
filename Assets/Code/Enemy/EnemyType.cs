@@ -1,7 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// Типы врагов в игре
+/// </summary>
 public enum EnemyType
 {
-    MelleBase,
+    /// <summary>
+    /// Враг ближнего боя
+    /// </summary>
+    MeleeBase,
+    
+    /// <summary>
+    /// Враг дальнего боя
+    /// </summary>
     RangedBase
 }

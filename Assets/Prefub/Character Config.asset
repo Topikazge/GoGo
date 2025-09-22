@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Character Config
   m_EditorClassIdentifier: 
   _speed: 5
-  _healt: 5
-  _radiosApplyDamage: 0.4
-  _prefub: {fileID: 0}
+  _health: 100
+  _radiusApplyDamage: 1.5
+  _prefab: {fileID: 6285987638435256173, guid: 371efb66b1f44444a9b625d1cb065090, type: 3}
