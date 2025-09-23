@@ -34,16 +34,6 @@ public class CharacterController : MonoBehaviour
     {
         _inputContainer = FindFirstObjectByType<InputContainer>();
         _rigidBody = GetComponent<Rigidbody2D>();
-
-        if (_inputContainer == null)
-        {
-            Debug.LogError("InputContainer not found in scene!");
-        }
-
-        if (_rigidBody == null)
-        {
-            Debug.LogError("Rigidbody2D component not found on " + gameObject.name);
-        }
     }
 
     /// <summary>
@@ -55,10 +45,6 @@ public class CharacterController : MonoBehaviour
         {
             _playerData.CurrentHealth = _playerDataConfig.Health;
             _playerData.Speed = _playerDataConfig.Speed;
-        }
-        else
-        {
-            Debug.LogError("Player data configuration is missing!");
         }
     }
 
@@ -133,14 +119,12 @@ public class CharacterController : MonoBehaviour
         // Проверяем, не погиб ли персонаж
         if (_playerData.CurrentHealth <= 0)
         {
-            OnPlayerDeath();
+            CharacterDead();
         }
     }
 
-    /// <summary>
-    /// Обработка смерти персонажа
-    /// </summary>
-    private void OnPlayerDeath()
+
+    private void CharacterDead()
     {
        /* Debug.Log("Персонаж погиб!");
 

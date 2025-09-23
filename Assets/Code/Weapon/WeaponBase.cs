@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 /// <summary>
 /// Базовый класс для всех видов оружия
 /// </summary>
+[Serializable]
 public abstract class WeaponBase
 {
     /// <summary>

@@ -6,15 +6,22 @@ using UnityEngine;
 public class FlyingProjectile : MonoBehaviour
 {
     [Header("Projectile Settings")]
-    [SerializeField] private float _speed = 10f;
-    [SerializeField] private float _radius = 0.2f;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _radius;
     [SerializeField] private LayerMask _enemyLayerMask;
-    [SerializeField] private int _damage = 10;
-    [SerializeField] private float _lifetime = 5f;
-    
-    [Header("Movement")]
+    [SerializeField] private int _damage;
+    [SerializeField] private float _lifetime;
+    private ProjectileGun _projectileGun;
+
     private Vector2 _direction;
     private float _lifeTimer;
+
+
+    public void Intialization(ProjectileGun projectileGun)
+    {
+        _projectileGun = projectileGun;
+    }
+
     
     private void Update()
     {
@@ -23,9 +30,7 @@ public class FlyingProjectile : MonoBehaviour
         UpdateLifetime();
     }
 
-    /// <summary>
-    /// Движение снаряда
-    /// </summary>
+
     private void Move()
     {
         if (_direction != Vector2.zero)
@@ -34,9 +39,7 @@ public class FlyingProjectile : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Проверка столкновения с врагами
-    /// </summary>
+
     private void CheckEnemy()
     {
         Collider2D enemyCollider = Physics2D.OverlapCircle(transform.position, _radius, _enemyLayerMask);
@@ -51,23 +54,16 @@ public class FlyingProjectile : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Применение урона к врагу
-    /// </summary>
-    /// <param name="enemy">Враг, получивший урон</param>
+
     private void ApplyDamage(EnemyMeleeView enemy) 
     {
         if (enemy != null)
         {
             enemy.TakeDamage(_damage);
             Debug.Log($"Снаряд попал в врага - {enemy.gameObject.name}");
-
         }
     }
-    
-    /// <summary>
-    /// Обновление времени жизни снаряда
-    /// </summary>
+
     private void UpdateLifetime()
     {
         _lifeTimer += Time.deltaTime;
@@ -77,38 +73,33 @@ public class FlyingProjectile : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Уничтожение снаряда
-    /// </summary>
+
     private void DestroyProjectile()
     {
-        // TODO: Добавить эффекты взрыва/попадания
-        Destroy(gameObject);
+        SetActive(false);
+        _projectileGun.ProjectileIsDeastroy(this);
     }
 
-    /// <summary>
-    /// Запуск снаряда
-    /// </summary>
-    /// <param name="direction">Направление полета</param>
-    /// <param name="startPosition">Начальная позиция</param>
+
     public void Begin(Vector2 direction, Vector2 startPosition)
     {
         _direction = direction.normalized;
         transform.position = startPosition;
         _lifeTimer = 0f;
+        SetActive(true);
     }
 
-    /// <summary>
-    /// Остановка снаряда
-    /// </summary>
     public void End()
     {
         _direction = Vector2.zero;
     }
 
-    /// <summary>
-    /// Отрисовка радиуса снаряда в редакторе
-    /// </summary>
+    private void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
+    }
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy Melee
   m_EditorClassIdentifier: 
   _enemyType: 0
-  _speed: 1
+  _speed: 3
   _maxHealth: 2
   _damage: 1
   _attackInterval: 1

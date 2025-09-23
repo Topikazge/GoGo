@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Пул объектов для врагов
 /// </summary>
-public class EnemyPool : ObjectPoolEnemyBase<EnemyView>
+public class EnemyPool : ObjectPoolEnemyBase
 {
     /// <summary>
     /// Инициализация пула врагов

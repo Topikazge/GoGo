@@ -7,11 +7,13 @@ using System.Collections.Generic;
 public class WeaponCharacterController : MonoBehaviour
 {
     [Header("Weapon Settings")]
-    [SerializeField] private int _maxWeapons = 3;
+    [SerializeField] private int _maxWeapons;
     
     [Header("Weapon Management")]
-    private List<WeaponBase> _weapons;
-    private int _currentWeaponIndex = 0;
+    [SerializeField] private List<WeaponBase> _weapons;
+    private int _currentWeaponIndex;
+
+
     
     private void Awake()
     {
@@ -68,29 +70,7 @@ public class WeaponCharacterController : MonoBehaviour
             }
         }
     }
-    
-    /// <summary>
-    /// Переключение на следующее оружие
-    /// </summary>
-    public void SwitchToNextWeapon()
-    {
-        if (_weapons.Count <= 1) return;
-        
-        _currentWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
-        Debug.Log($"Switched to weapon {_currentWeaponIndex}");
-    }
-    
-    /// <summary>
-    /// Переключение на предыдущее оружие
-    /// </summary>
-    public void SwitchToPreviousWeapon()
-    {
-        if (_weapons.Count <= 1) return;
-        
-        _currentWeaponIndex = (_currentWeaponIndex - 1 + _weapons.Count) % _weapons.Count;
-        Debug.Log($"Switched to weapon {_currentWeaponIndex}");
-    }
-    
+
     /// <summary>
     /// Обновление всех оружий
     /// </summary>
@@ -108,24 +88,9 @@ public class WeaponCharacterController : MonoBehaviour
     private void Update()
     {
         UpdateWeapons();
-        HandleWeaponSwitching();
     }
     
-    /// <summary>
-    /// Обработка переключения оружия
-    /// </summary>
-    private void HandleWeaponSwitching()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            SwitchToPreviousWeapon();
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            SwitchToNextWeapon();
-        }
-    }
-    
+  
     /// <summary>
     /// Получение текущего оружия
     /// </summary>
@@ -140,12 +105,4 @@ public class WeaponCharacterController : MonoBehaviour
         return _weapons[_currentWeaponIndex];
     }
     
-    /// <summary>
-    /// Получение количества оружий
-    /// </summary>
-    /// <returns>Количество оружий в арсенале</returns>
-    public int GetWeaponCount()
-    {
-        return _weapons.Count;
-    }
 }
